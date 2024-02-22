@@ -1,4 +1,12 @@
+import { useState } from "react"
+
 const ImageCard = ({ image }) => {
+  const [imageLoaded, setImageLoaded] = useState(false)
+
+  const handleImageLoad = () => {
+    setImageLoaded(true)
+  }
+
   return (
     <div className="relative group">
       <a
@@ -8,20 +16,22 @@ const ImageCard = ({ image }) => {
         className="hover:opacity-75"
       >
         <img
-          src={image.webformatURL}
+          src={imageLoaded ? image.webformatURL : image.previewURL}
+          loading="lazy"
           alt="img"
-          className="w-full h-80 object-cover bg-white"
+          className="object-cover w-full bg-white h-80"
+          onLoad={handleImageLoad}
         />
       </a>
-      <div className="flex gap-2 absolute bottom-3 left-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <div className="absolute z-10 flex gap-2 transition-opacity duration-300 opacity-0 bottom-3 left-4 group-hover:opacity-100">
         <span>
           <img
-            className="w-9 rounded-full object-cover"
+            className="object-cover rounded-full w-9"
             src={image.userImageURL}
             alt="avatar"
           />
         </span>
-        <span className="font-bold text-white text-xl">{image.user}</span>
+        <span className="text-xl font-bold text-white">{image.user}</span>
       </div>
     </div>
   )
